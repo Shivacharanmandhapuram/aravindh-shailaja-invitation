@@ -235,6 +235,8 @@ section{position:relative;container-type:inline-size}
 .music.on .bars i{animation:bar .9s ease-in-out infinite}
 .music.on .bars i:nth-child(2){animation-delay:.2s}.music.on .bars i:nth-child(3){animation-delay:.4s}
 @keyframes bar{0%,100%{height:30%}50%{height:100%}}
+.music.waiting b{animation:ring 1.8s ease-out infinite}
+@keyframes ring{0%{box-shadow:0 0 0 0 rgba(201,162,74,.65)}100%{box-shadow:0 0 0 14px rgba(201,162,74,0)}}
 
 canvas#petals{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:60}
 
@@ -574,28 +576,42 @@ if (isApple) {   // iPhone opens .ics straight into Calendar
   saveDate.href = "https://calendar.google.com/calendar/render?action=TEMPLATE&" + new URLSearchParams({ text: calTitle, dates: `${stamp(wd)}/${stamp(calEnd)}`, location: CONFIG.venue });
 }
 
-/* ---------- music: hidden YouTube player (phones only allow sound after a tap) ---------- */
+/* ---------- music: hidden YouTube player ----------
+   Tries to start on load. Phones (and most first visits on laptops) block sound until the guest
+   touches the page, so it also starts on the first tap/touch anywhere. Once the guest presses
+   Stop it stays stopped, even after a reload, until they press Play again. Loops from M.start. */
 const musicBtn = document.getElementById("musicBtn"), musicIcon = document.getElementById("musicIcon"), M = CONFIG.music;
-let yt = null, ytReady = false, wantMusic = false;
-const showMusic = on => { musicBtn.classList.toggle("on", on); musicIcon.innerHTML = on ? '<path d="M7 5h3v14H7zM14 5h3v14h-3z"/>' : '<path d="M8 5v14l11-7z"/>'; };
-function setMusic(on) {
-  wantMusic = on; showMusic(on);
-  if (ytReady) on ? yt.playVideo() : yt.pauseVideo();
-}
+const store = { get: k => { try { return localStorage.getItem(k); } catch { return null; } },
+                set: (k, v) => { try { localStorage.setItem(k, v); } catch {} } };
+let yt = null, ytReady = false, playing = false, wantMusic = store.get("musicStopped") !== "1";
+const showMusic = on => {
+  musicBtn.classList.toggle("on", on); musicBtn.classList.toggle("waiting", !on && wantMusic);
+  musicIcon.innerHTML = on ? '<path d="M7 5h3v14H7zM14 5h3v14h-3z"/>' : '<path d="M8 5v14l11-7z"/>';
+};
+const tryPlay = () => { if (ytReady && wantMusic && !playing) yt.playVideo(); };
 if (M && M.youtube) {
   const tag = document.createElement("script"); tag.src = "https://www.youtube.com/iframe_api"; document.head.appendChild(tag);
   window.onYouTubeIframeAPIReady = () => {
     yt = new YT.Player("ytMusic", { height: "1", width: "1", videoId: M.youtube,
-      playerVars: { autoplay: 0, controls: 0, start: M.start, playsinline: 1, rel: 0 },
+      playerVars: { autoplay: wantMusic ? 1 : 0, controls: 0, start: M.start, playsinline: 1, rel: 0 },
       events: {
-        onReady: () => { ytReady = true; yt.setVolume(M.volume); if (wantMusic) yt.playVideo(); },
-        onStateChange: e => { if (e.data === YT.PlayerState.ENDED) { yt.seekTo(M.start, true); yt.playVideo(); } }   // loop from the same point
+        onReady: () => { ytReady = true; yt.setVolume(M.volume); tryPlay(); },
+        onStateChange: e => {
+          playing = e.data === YT.PlayerState.PLAYING;
+          if (e.data === YT.PlayerState.ENDED) { yt.seekTo(M.start, true); yt.playVideo(); return; }   // loop from the same point
+          showMusic(playing);
+        }
       } });
   };
-  const firstTap = e => { if (!musicBtn.contains(e.target) && !musicBtn.classList.contains("on")) setMusic(true); ["click","touchend"].forEach(t => removeEventListener(t, firstTap, true)); };
-  ["click","touchend"].forEach(t => addEventListener(t, firstTap, true));
+  // any touch, tap, click or key starts it if the browser blocked autoplay
+  ["pointerdown", "touchstart", "touchend", "click", "keydown"].forEach(t => addEventListener(t, e => { if (!musicBtn.contains(e.target)) tryPlay(); }, { capture: true, passive: true }));
+  showMusic(false);
 }
-musicBtn.onclick = e => { e.stopPropagation(); setMusic(!musicBtn.classList.contains("on")); };
+musicBtn.onclick = e => {
+  e.stopPropagation();
+  if (playing) { wantMusic = false; store.set("musicStopped", "1"); yt.pauseVideo(); showMusic(false); }
+  else { wantMusic = true; store.set("musicStopped", "0"); tryPlay(); }
+};
 document.addEventListener("visibilitychange", () => { if (!ytReady || !wantMusic) return; document.hidden ? yt.pauseVideo() : yt.playVideo(); });
 
 /* ---------- petal burst ("Touch here for Magic") ---------- */
