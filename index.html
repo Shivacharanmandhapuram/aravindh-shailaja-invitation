@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" class="locked">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -10,7 +10,7 @@
 <!-- Link preview on WhatsApp (og:image must be a full https:// URL) -->
 <meta property="og:title" content="Aravindh weds Shailaja — Wedding Invitation">
 <meta property="og:description" content="Sumuhurtham · Friday, 13 November 2026 · 7:09 AM · K.S. Event Hall, Gadwal">
-<meta property="og:image" content="https://aravindh-shailaja-invitation.vercel.app/assets/og-preview.jpg">
+<meta property="og:image" content="https://aravindh-shailaja-invitation.vercel.app/assets/og-preview.jpg?v=2">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:url" content="https://aravindh-shailaja-invitation.vercel.app/">
@@ -238,12 +238,44 @@ section{position:relative;container-type:inline-size}
 .music.waiting b{animation:ring 1.8s ease-out infinite}
 @keyframes ring{0%{box-shadow:0 0 0 0 rgba(201,162,74,.65)}100%{box-shadow:0 0 0 14px rgba(201,162,74,0)}}
 
+/* ---------- welcome gate: one tap opens the invite and starts the music ---------- */
+html.locked,html.locked body{overflow:hidden}
+.gate{position:fixed;inset:0;z-index:100;display:grid;place-items:center;text-align:center;padding:0 8vw;color:var(--ivory);background:radial-gradient(ellipse 80% 55% at 50% 45%,rgba(255,196,110,.22),transparent 70%),var(--silk);transition:opacity .9s ease,visibility .9s,transform .9s ease;container-type:inline-size}
+@media (min-width:481px){.gate{left:calc(50% - 240px);right:calc(50% - 240px)}}
+.gate.open{opacity:0;visibility:hidden;transform:scale(1.08)}
+.gate::before{content:"";position:absolute;inset:14px;border:1px solid rgba(230,200,115,.45);border-radius:18px;pointer-events:none;box-shadow:inset 0 0 0 5px rgba(46,7,16,.35),inset 0 0 0 6px rgba(230,200,115,.25)}
+.gate .dust{z-index:0}
+.gate-in{position:relative;z-index:1}
+.gate .g-emblem{width:64cqw;margin:0 auto 5cqw;filter:drop-shadow(0 0 18px rgba(255,200,90,.35))}
+.gate .h-om{color:#f2d27e}
+.gate .g-k{font-family:var(--sans);font-size:max(10px,2.6cqw);letter-spacing:.42em;text-transform:uppercase;color:rgba(251,246,234,.7);margin-top:6cqw}
+.gate .g-names{font-family:var(--script);font-size:17cqw;line-height:1.1}
+.gate .g-amp{font-family:var(--display);font-size:6cqw;color:var(--gold-2);margin:-1cqw 0}
+.gate .g-date{font-family:var(--sans);font-size:max(11px,3cqw);font-weight:500;letter-spacing:.3em;text-transform:uppercase;margin:5cqw 0 9cqw;color:rgba(251,246,234,.85)}
+.gate .gold-btn{animation:bob 2.4s ease-in-out infinite}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+.gate .g-hint{font-family:var(--sans);font-size:12px;letter-spacing:.08em;color:rgba(251,246,234,.55);margin-top:16px}
 canvas#petals{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:60}
 
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.rv{opacity:1;transform:none}}
 </style>
 </head>
 <body>
+<div class="gate" id="gate">
+  <div class="dust"></div>
+  <div class="gate-in">
+    <img class="g-emblem" src="assets/emblem.webp" width="900" height="300" alt="" fetchpriority="high">
+    <div class="h-om">Sreerasthu · Shubhamasthu · Avignamasthu</div>
+    <div class="g-k">Wedding Invitation</div>
+    <div class="g-names foil" data-k="groom"></div>
+    <div class="g-amp">&amp;</div>
+    <div class="g-names foil" data-k="bride"></div>
+    <div class="g-date" id="gateDate"></div>
+    <button class="gold-btn" id="gateBtn">Tap to Open Invitation</button>
+    <div class="g-hint">Best enjoyed with sound on</div>
+  </div>
+</div>
+
 <main class="page">
 
 <!-- 1. HERO -->
@@ -561,6 +593,7 @@ mDate.textContent = wd.toLocaleDateString("en-IN", { ...IST, day: "numeric", mon
 const wTime = wd.toLocaleTimeString("en-IN", { ...IST, hour: "numeric", minute: "2-digit" }).toUpperCase();
 mTime.textContent = wd.toLocaleDateString("en-IN", { ...IST, weekday: "long" }) + " · " + wTime;
 mLagnam.textContent = CONFIG.lagnam;
+gateDate.textContent = wd.toLocaleDateString("en-IN", { ...IST, day: "numeric", month: "long", year: "numeric" });
 heroDate.textContent = wd.toLocaleDateString("en-IN", { ...IST, weekday: "long", day: "numeric", month: "long", year: "numeric" });
 invDate.textContent = wd.toLocaleDateString("en-IN", { ...IST, weekday: "long", day: "numeric", month: "long", year: "numeric" }) + " · " + wTime;
 finaleNames.textContent = `${CONFIG.groom} & ${CONFIG.bride}`.toUpperCase();
@@ -579,10 +612,10 @@ if (isApple) {   // iPhone opens .ics straight into Calendar
 /* ---------- music: hidden YouTube player ----------
    Tries to start on load. Phones (and most first visits on laptops) block sound until the guest
    touches the page, so it also starts on the first tap/touch anywhere. Once the guest presses
-   Stop it stays stopped, even after a reload, until they press Play again. Loops from M.start. */
+   Stop it stays stopped through reloads in that visit, until they press Play again. Loops from M.start. */
 const musicBtn = document.getElementById("musicBtn"), musicIcon = document.getElementById("musicIcon"), M = CONFIG.music;
-const store = { get: k => { try { return localStorage.getItem(k); } catch { return null; } },
-                set: (k, v) => { try { localStorage.setItem(k, v); } catch {} } };
+const store = { get: k => { try { return sessionStorage.getItem(k); } catch { return null; } },
+                set: (k, v) => { try { sessionStorage.setItem(k, v); } catch {} } };
 let yt = null, ytReady = false, playing = false, wantMusic = store.get("musicStopped") !== "1";
 const showMusic = on => {
   musicBtn.classList.toggle("on", on); musicBtn.classList.toggle("waiting", !on && wantMusic);
@@ -611,6 +644,15 @@ musicBtn.onclick = e => {
   e.stopPropagation();
   if (playing) { wantMusic = false; store.set("musicStopped", "1"); yt.pauseVideo(); showMusic(false); }
   else { wantMusic = true; store.set("musicStopped", "0"); tryPlay(); }
+};
+/* welcome gate: the tap is the gesture phones need before they allow sound */
+const gate = document.getElementById("gate");
+document.getElementById("gateBtn").onclick = () => {
+  tryPlay();
+  window.scrollTo(0, 0);
+  gate.classList.add("open");
+  document.documentElement.classList.remove("locked");
+  setTimeout(() => gate.remove(), 1000);
 };
 document.addEventListener("visibilitychange", () => { if (!ytReady || !wantMusic) return; document.hidden ? yt.pauseVideo() : yt.playVideo(); });
 
