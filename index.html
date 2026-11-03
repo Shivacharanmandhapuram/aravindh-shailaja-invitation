@@ -68,11 +68,16 @@ section{position:relative;container-type:inline-size}
 .dust{position:absolute;inset:0;pointer-events:none;z-index:2}
 .dust span{position:absolute;bottom:-10px;width:3px;height:3px;border-radius:50%;background:#ffe39a;box-shadow:0 0 6px 2px rgba(255,214,120,.75);opacity:0;animation:rise linear infinite}
 @keyframes rise{0%{transform:translate(0,0);opacity:0}12%{opacity:.95}80%{opacity:.7}100%{transform:translate(var(--dx),calc(var(--vh) * -1));opacity:0}}
-.names{position:absolute;left:0;right:0;top:calc(var(--vh) * .12);text-align:center;z-index:1;will-change:filter,opacity,transform;filter:drop-shadow(0 3px 14px rgba(10,30,90,.55))}
+.names{position:absolute;left:0;right:0;top:calc(var(--vh) * .1 + env(safe-area-inset-top));text-align:center;z-index:1;will-change:filter,opacity,transform;filter:drop-shadow(0 3px 14px rgba(10,30,90,.55))}
 .foil{background:var(--foil);background-size:250% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:shimmer 6s ease-in-out infinite}
 @keyframes shimmer{0%,100%{background-position:100% 0}50%{background-position:0 0}}
-.names .n{font-family:var(--display);font-size:clamp(38px,12.4cqw,68px);letter-spacing:.06em;line-height:1.05}
-.names .w{font-family:var(--sans);font-size:12px;letter-spacing:.45em;margin:16px 0;color:#fff}
+.names .n{font-family:var(--display);font-size:clamp(34px,11cqw,60px);letter-spacing:.06em;line-height:1.05}
+.names .w{font-family:var(--sans);font-size:12px;letter-spacing:.45em;margin:12px 0;color:#fff}
+.h-om{font-family:var(--sans);font-size:max(9px,2.5cqw);letter-spacing:.24em;text-transform:uppercase;color:#ffe9b0}
+.h-line{font-family:var(--serif);font-style:italic;font-size:max(14px,4cqw);line-height:1.35;color:#fff;margin:2.6cqw auto 0;max-width:88%}
+.h-line b{font-style:normal;font-weight:600;color:#fff6dc}
+.h-line + .n{margin-top:4cqw}
+.h-date{font-family:var(--sans);font-size:max(11px,3cqw);font-weight:500;letter-spacing:.3em;text-transform:uppercase;color:#fff;margin-top:4cqw}
 .gopuram{position:absolute;left:50%;bottom:-2px;width:min(94%,460px);transform:translate(-50%,72%);transform-origin:50% 88%;will-change:transform,opacity;filter:drop-shadow(0 18px 30px rgba(40,10,0,.35));z-index:3}
 .glow{position:absolute;inset:0;z-index:2;opacity:0;pointer-events:none;background:radial-gradient(ellipse 85% 45% at 50% 38%,#fffbf2,rgba(255,251,242,0)) var(--glow)}
 .hint{position:absolute;z-index:4;bottom:calc(20px + env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);color:#fff;font-family:var(--sans);font-size:10px;letter-spacing:.35em;text-align:center;text-shadow:0 1px 6px rgba(0,0,0,.4);transition:opacity .4s}
@@ -244,9 +249,13 @@ canvas#petals{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;
   <div class="stage">
     <img class="sky" id="heroSky" src="assets/hero-sky.webp" width="941" height="1672" alt="" fetchpriority="high">
     <div class="names" id="heroNames">
+      <div class="h-om">Sreerasthu · Shubhamasthu · Avignamasthu</div>
+      <div class="h-line">With the blessings of<br><b data-k="blessings"></b></div>
+      <div class="h-line"><b data-k="invitedByShort"></b><br>cordially invite you to the wedding of</div>
       <div class="n foil" data-k="groomUpper"></div>
       <div class="w">WEDS</div>
       <div class="n foil" data-k="brideUpper"></div>
+      <div class="h-date" id="heroDate"></div>
     </div>
     <div class="dust" id="dust"></div>
     <div class="glow" id="heroGlow"></div>
@@ -431,6 +440,7 @@ const CONFIG = {
   blessings: "Smt. Peddolla Padmamma & Sri Peddolla Pedda Kishtanna",
   blessingsNote: "(Ex. Sarpanch, Peddapally)",
   invitedBy: "Smt. Peddolla Sudha & Sri Peddolla Ajay (Peddapally)",
+  invitedByShort: "Smt. Peddolla Sudha & Sri Peddolla Ajay",
   compliments: "Sri & Smt. U. Rajeshwari – Gopal, M. Parimala Sagar – Vijay Sagar and near & dear",
   whatsapp: "919704616478",            // country code + number, no +
   weddingDate: "2026-11-13T07:09:00+05:30",
@@ -549,6 +559,7 @@ mDate.textContent = wd.toLocaleDateString("en-IN", { ...IST, day: "numeric", mon
 const wTime = wd.toLocaleTimeString("en-IN", { ...IST, hour: "numeric", minute: "2-digit" }).toUpperCase();
 mTime.textContent = wd.toLocaleDateString("en-IN", { ...IST, weekday: "long" }) + " · " + wTime;
 mLagnam.textContent = CONFIG.lagnam;
+heroDate.textContent = wd.toLocaleDateString("en-IN", { ...IST, weekday: "long", day: "numeric", month: "long", year: "numeric" });
 invDate.textContent = wd.toLocaleDateString("en-IN", { ...IST, weekday: "long", day: "numeric", month: "long", year: "numeric" }) + " · " + wTime;
 finaleNames.textContent = `${CONFIG.groom} & ${CONFIG.bride}`.toUpperCase();
 const stamp = t => new Date(t).toISOString().replace(/[-:]/g, "").replace(/\.\d{3}/, "");
