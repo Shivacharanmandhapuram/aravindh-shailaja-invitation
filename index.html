@@ -56,13 +56,13 @@ section{position:relative;container-type:inline-size}
 .bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0}
 
 /* ---------- reveal ---------- */
-.rv{opacity:0;transform:translateY(24px);transition:opacity .9s ease,transform .9s cubic-bezier(.2,.7,.2,1)}
+.rv{opacity:0;transform:translateY(18px);transition:opacity .6s ease,transform .6s cubic-bezier(.2,.7,.2,1)}
 .rv.in{opacity:1;transform:none}
-.d1{transition-delay:.12s}.d2{transition-delay:.24s}.d3{transition-delay:.36s}.d4{transition-delay:.48s}
+.d1{transition-delay:.06s}.d2{transition-delay:.12s}.d3{transition-delay:.18s}.d4{transition-delay:.24s}
 
 /* ---------- 1. HERO ---------- */
 /* scroll story: names → gopuram rises → camera walks through its doorway into golden light */
-#hero{height:calc(var(--vh) * 3.4)}
+#hero{height:calc(var(--vh) * 2.7)}
 .stage{position:sticky;top:0;height:var(--vh);overflow:hidden;background:#2f6fd6}
 .stage .sky{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 100%;transform-origin:50% 100%;will-change:transform}
 .dust{position:absolute;inset:0;pointer-events:none;z-index:2}
@@ -83,7 +83,7 @@ section{position:relative;container-type:inline-size}
 /* starts in the same golden light the opening ends in, ends by melting into the silk */
 #divine{aspect-ratio:941/1672;display:flex;flex-direction:column;align-items:center;text-align:center;padding:9cqw 6cqw 0;color:#fff}
 #divine .bg{-webkit-mask-image:linear-gradient(180deg,#000 84%,transparent);mask-image:linear-gradient(180deg,#000 84%,transparent)}
-#divine::before{content:"";position:absolute;left:0;right:0;top:0;height:30%;z-index:1;pointer-events:none;background:linear-gradient(180deg,var(--glow) 0%,var(--glow) 30%,rgba(255,242,212,.85) 60%,rgba(255,242,212,0))}
+#divine::before{content:"";position:absolute;left:0;right:0;top:0;height:22%;z-index:1;pointer-events:none;background:linear-gradient(180deg,var(--glow) 0%,rgba(255,242,212,.85) 35%,rgba(255,242,212,0))}
 #divine > :not(.bg){position:relative;z-index:2}
 #divine .k{font-family:var(--sans);font-size:max(11px,3cqw);letter-spacing:.32em;text-transform:uppercase;color:var(--gold-deep)}
 #divine .t{font-family:var(--script);font-size:12cqw;line-height:1.05;margin-top:1cqw;color:var(--maroon)}
@@ -219,7 +219,10 @@ section{position:relative;container-type:inline-size}
 
 /* ---------- music ---------- */
 .music{position:fixed;left:max(14px,env(safe-area-inset-left));bottom:calc(14px + env(safe-area-inset-bottom));z-index:50;display:flex;align-items:center;background:rgba(255,255,255,.92);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border-radius:999px;padding:4px 14px 4px 4px;gap:10px;box-shadow:0 6px 20px rgba(0,0,0,.25);border:0;cursor:pointer}
-@media (min-width:481px){.music{left:calc(50% - 226px)}}
+@media (min-width:481px){.music{left:calc(50% - 226px)}.loc{right:calc(50% - 226px)!important}}
+.loc{position:fixed;right:max(14px,env(safe-area-inset-right));bottom:calc(14px + env(safe-area-inset-bottom));z-index:50;display:flex;align-items:center;gap:8px;padding:4px 16px 4px 4px;border-radius:999px;text-decoration:none;background:rgba(255,255,255,.92);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);box-shadow:0 6px 20px rgba(0,0,0,.25);font-family:var(--sans);font-size:13px;font-weight:500;letter-spacing:.04em;color:var(--maroon)}
+.loc b{width:42px;height:42px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(160deg,#d2b47a,#a8854a)}
+.loc svg{width:19px;height:19px;stroke:#fff}
 .music b{width:42px;height:42px;border-radius:50%;background:linear-gradient(160deg,#d2b47a,#a8854a);display:grid;place-items:center}
 .music svg{width:16px;height:16px;fill:#fff}
 .music .bars{display:flex;gap:2px;align-items:flex-end;height:14px}
@@ -397,6 +400,9 @@ canvas#petals{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;
 
 </main>
 
+<a class="loc" id="locBtn" target="_blank" rel="noopener" aria-label="Open venue in Google Maps">
+  <b><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg></b>Location
+</a>
 <button class="music" id="musicBtn" aria-label="Play music">
   <b><svg id="musicIcon" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></b>
   <span class="bars"><i></i><i></i><i></i></span>
@@ -451,6 +457,7 @@ const derived = { ...CONFIG, groomUpper: CONFIG.groom.toUpperCase(), brideUpper:
                   groomFullUpper: CONFIG.groomFull.toUpperCase(), brideFullUpper: CONFIG.brideFull.toUpperCase() };
 document.querySelectorAll("[data-k]").forEach(el => { el.textContent = derived[el.dataset.k] ?? ""; });
 document.title = `${CONFIG.groom} Weds ${CONFIG.bride}`;
+document.getElementById("locBtn").href = CONFIG.map;
 document.getElementById("waBtn").href = `https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(`Namaste, we received the wedding invitation for ${CONFIG.groom} and ${CONFIG.bride}. We would like to confirm our presence.`)}`;
 
 /* ---------- events carousel ---------- */
@@ -505,14 +512,14 @@ let ticking = false;
 function onScroll() {
   ticking = false;
   const p = clamp(window.scrollY / (hero.offsetHeight - window.innerHeight));
-  const rise = ease(clamp(p / .4));            // 0–40%: tower rises
-  const walk = clamp((p - .48) / .42);         // 48–90%: walk through the doorway
+  const rise = ease(clamp(p / .38));           // 0–38%: tower rises
+  const walk = clamp((p - .42) / .55);         // 42–97%: walk through the doorway
   const zoom = 1 + Math.pow(walk, 2.2) * 11;
   gopuram.style.transform = `translate(-50%, ${72 - rise*72}%) scale(${zoom})`;
   gopuram.style.opacity = 1 - clamp((walk - .7) / .25);
   gopuram.style.filter = walk > 0 ? "none" : "";   // drop-shadow on a 12× layer is too heavy for phones
   heroSky.style.transform = `scale(${1 + rise*.08 + walk*.5})`;
-  heroGlow.style.opacity = clamp((walk - .35) / .45);
+  heroGlow.style.opacity = clamp((walk - .62) / .33);
   heroNames.style.filter = `blur(${clamp((p-.12)*4)*8}px)`;
   heroNames.style.opacity = 1 - clamp((p-.18)*3.5);
   heroNames.style.transform = `translateY(${-p*80}px)`;
