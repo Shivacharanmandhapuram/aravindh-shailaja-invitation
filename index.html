@@ -401,7 +401,7 @@ canvas#petals{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;
   <b><svg id="musicIcon" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></b>
   <span class="bars"><i></i><i></i><i></i></span>
 </button>
-<audio id="bgm" loop preload="none" playsinline></audio>
+<div id="ytMusic" aria-hidden="true" style="position:fixed;width:1px;height:1px;left:-9999px;top:-9999px;opacity:0;pointer-events:none"></div>
 <canvas id="petals"></canvas>
 
 <script>
@@ -433,7 +433,7 @@ const CONFIG = {
   venueAddress: "Opp. Rural Police Station, Kurnool Road, Gadwal",
   venue: "K.S. Event Hall, Opp. Rural Police Station, Kurnool Road, Gadwal",   // used by "Save the date"
   map: "https://www.google.com/maps/search/?api=1&query=K.S.+Event+Hall,+Kurnool+Road,+Gadwal",
-  music: "",                          // e.g. "assets/song.mp3"
+  music: { youtube: "r5hSMSpb1Qs", start: 97, volume: 20 },   // same song as the Pramod–Manisha site, from 1:37
   footerLine: "With love, the Peddolla family",
   story: "Some souls are destined to find each other, no matter how long the journey. Theirs is a story of finding peace in each other's presence, strength in every challenge, and a home in each other's hearts. As they take the sacred vows of forever, they carry the blessings of everyone who has been part of their journey — and invite you to celebrate the beginning of their forever.",
   events: [   // [bracketed] values are placeholders — fill in when the dates are fixed
@@ -556,18 +556,29 @@ if (isApple) {   // iPhone opens .ics straight into Calendar
   saveDate.href = "https://calendar.google.com/calendar/render?action=TEMPLATE&" + new URLSearchParams({ text: calTitle, dates: `${stamp(wd)}/${stamp(calEnd)}`, location: CONFIG.venue });
 }
 
-/* ---------- music (phones only allow sound after a tap) ---------- */
-const bgm = document.getElementById("bgm"), musicBtn = document.getElementById("musicBtn"), musicIcon = document.getElementById("musicIcon");
-if (CONFIG.music) bgm.src = CONFIG.music;
+/* ---------- music: hidden YouTube player (phones only allow sound after a tap) ---------- */
+const musicBtn = document.getElementById("musicBtn"), musicIcon = document.getElementById("musicIcon"), M = CONFIG.music;
+let yt = null, ytReady = false, wantMusic = false;
+const showMusic = on => { musicBtn.classList.toggle("on", on); musicIcon.innerHTML = on ? '<path d="M7 5h3v14H7zM14 5h3v14h-3z"/>' : '<path d="M8 5v14l11-7z"/>'; };
 function setMusic(on) {
-  musicBtn.classList.toggle("on", on);
-  musicIcon.innerHTML = on ? '<path d="M7 5h3v14H7zM14 5h3v14h-3z"/>' : '<path d="M8 5v14l11-7z"/>';
-  if (!CONFIG.music) return;
-  on ? bgm.play().catch(() => setMusic(false)) : bgm.pause();
+  wantMusic = on; showMusic(on);
+  if (ytReady) on ? yt.playVideo() : yt.pauseVideo();
+}
+if (M && M.youtube) {
+  const tag = document.createElement("script"); tag.src = "https://www.youtube.com/iframe_api"; document.head.appendChild(tag);
+  window.onYouTubeIframeAPIReady = () => {
+    yt = new YT.Player("ytMusic", { height: "1", width: "1", videoId: M.youtube,
+      playerVars: { autoplay: 0, controls: 0, start: M.start, playsinline: 1, rel: 0 },
+      events: {
+        onReady: () => { ytReady = true; yt.setVolume(M.volume); if (wantMusic) yt.playVideo(); },
+        onStateChange: e => { if (e.data === YT.PlayerState.ENDED) { yt.seekTo(M.start, true); yt.playVideo(); } }   // loop from the same point
+      } });
+  };
+  const firstTap = e => { if (!musicBtn.contains(e.target) && !musicBtn.classList.contains("on")) setMusic(true); ["click","touchend"].forEach(t => removeEventListener(t, firstTap, true)); };
+  ["click","touchend"].forEach(t => addEventListener(t, firstTap, true));
 }
 musicBtn.onclick = e => { e.stopPropagation(); setMusic(!musicBtn.classList.contains("on")); };
-if (CONFIG.music) addEventListener("touchend", () => setMusic(true), { once: true });
-document.addEventListener("visibilitychange", () => { if (document.hidden && musicBtn.classList.contains("on")) bgm.pause(); else if (!document.hidden && musicBtn.classList.contains("on") && CONFIG.music) bgm.play().catch(()=>{}); });
+document.addEventListener("visibilitychange", () => { if (!ytReady || !wantMusic) return; document.hidden ? yt.pauseVideo() : yt.playVideo(); });
 
 /* ---------- petal burst ("Touch here for Magic") ---------- */
 const cv = document.getElementById("petals"), cx = cv.getContext("2d");
