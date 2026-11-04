@@ -90,9 +90,12 @@ section{position:relative;container-type:inline-size}
 #divine .bg{-webkit-mask-image:linear-gradient(180deg,#000 84%,transparent);mask-image:linear-gradient(180deg,#000 84%,transparent)}
 #divine::before{content:"";position:absolute;left:0;right:0;top:0;height:22%;z-index:1;pointer-events:none;background:linear-gradient(180deg,var(--glow) 0%,rgba(255,242,212,.85) 35%,rgba(255,242,212,0))}
 #divine > :not(.bg){position:relative;z-index:2}
-#divine .k{font-family:var(--sans);font-size:max(11px,3cqw);letter-spacing:.32em;text-transform:uppercase;color:var(--gold-deep)}
-#divine .t{font-family:var(--script);font-size:12cqw;line-height:1.05;margin-top:1cqw;color:var(--maroon)}
-#divine .deities{width:62cqw;margin:4cqw auto 0;filter:drop-shadow(0 0 26px rgba(255,214,120,.7))}
+#divine .k{font-family:var(--sans);font-size:max(10px,2.6cqw);letter-spacing:.16em;white-space:nowrap;text-transform:uppercase;color:var(--gold-deep)}
+#divine .t{font-family:var(--script);font-size:11cqw;line-height:1.1;margin-top:1cqw;color:var(--maroon)}
+/* the heading carries its own ivory glass plaque, so it reads on any screen over the ornate ceiling */
+.divine-head{padding:3.4cqw 7cqw 2.6cqw;border-radius:20px;background:radial-gradient(ellipse at 50% 45%,rgba(255,251,240,.94),rgba(255,244,222,.8));-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);box-shadow:inset 0 0 0 1px rgba(201,162,74,.7),inset 0 0 0 4px rgba(255,250,238,.5),inset 0 0 0 5px rgba(201,162,74,.35),0 10px 28px rgba(90,40,0,.28)}
+.divine-head .flourish{margin-top:1.5cqw}
+#divine .deities{width:62cqw;margin:5cqw auto 0;filter:drop-shadow(0 0 26px rgba(255,214,120,.7))}
 #divine .cap{font-family:var(--serif);font-style:italic;font-size:max(16px,4.6cqw);line-height:1.35;margin-top:auto;padding-bottom:9cqw;color:#fff8e6;text-shadow:0 1px 3px rgba(40,10,0,.9),0 2px 14px rgba(40,10,0,.8)}
 
 /* ---------- 3. INVITATION (stretchable temple frame) ---------- */
@@ -309,10 +312,12 @@ canvas#petals{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;
 
 <!-- 2. DIVINE BLESSINGS -->
 <section id="divine">
-  <img class="bg" src="assets/divine-bg.webp" width="1000" height="1703" alt="" loading="lazy" decoding="async">
-  <div class="k rv">Sri Venkateswara Swamy Prasanna</div>
-  <div class="t rv d1">Divine Blessings</div>
-  <div class="flourish rv d1">✦</div>
+  <img class="bg" src="assets/divine-bg.webp" width="941" height="1672" alt="" loading="lazy" decoding="async">
+  <div class="divine-head rv">
+    <div class="k">Sri Venkateswara Swamy Prasanna</div>
+    <div class="t">Divine Blessings</div>
+    <div class="flourish">✦</div>
+  </div>
   <img class="deities rv d2" src="assets/divine-couple.webp" width="844" height="1125" alt="Sri Venkateswara Swami and Sri Padmavathi Ammavaru" loading="lazy" decoding="async">
   <p class="cap rv d3">With the divine grace of Sri Venkateswara Swami<br>&amp; Sri Padmavathi Ammavaru</p>
 </section>
