@@ -256,14 +256,14 @@ html.locked,html.locked body{overflow:hidden}
 @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
 .gate .g-hint{font-family:var(--sans);font-size:12px;letter-spacing:.08em;color:rgba(251,246,234,.55);margin-top:16px}
 /* glass "swipe up" prompt floating in the opening sky */
-.nudge{position:fixed;left:50%;top:calc(var(--vh) * .6);z-index:55;transform:translate(-50%,10px);opacity:0;pointer-events:none;display:flex;align-items:center;gap:12px;padding:11px 20px 11px 12px;border-radius:999px;
-  background:linear-gradient(135deg,rgba(255,255,255,.28),rgba(255,255,255,.08));-webkit-backdrop-filter:blur(16px) saturate(170%);backdrop-filter:blur(16px) saturate(170%);
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.7),inset 0 0 0 1px rgba(255,255,255,.35),0 12px 34px rgba(10,30,90,.35);
-  font-family:var(--sans);font-size:12px;font-weight:500;letter-spacing:.2em;white-space:nowrap;text-transform:uppercase;color:#fff;text-shadow:0 1px 6px rgba(10,30,90,.4);transition:opacity .6s,transform .6s}
-.nudge.show{opacity:1;transform:translate(-50%,0)}
-.nudge .pill{position:relative;width:22px;height:34px;border-radius:12px;box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.85)}
-.nudge .pill::after{content:"";position:absolute;left:50%;width:4px;height:8px;margin-left:-2px;border-radius:2px;background:#fff;animation:swipe 1.6s cubic-bezier(.5,0,.3,1) infinite}
-@keyframes swipe{0%{top:20px;opacity:0}25%{opacity:1}100%{top:5px;opacity:0}}
+.nudge{position:fixed;left:50%;top:calc(var(--vh) * .6);z-index:55;transform:translate(-50%,8px);opacity:0;pointer-events:none;display:flex;align-items:center;gap:8px;padding:6px 14px 6px 8px;border-radius:999px;
+  background:rgba(255,255,255,.1);-webkit-backdrop-filter:blur(10px) saturate(140%);backdrop-filter:blur(10px) saturate(140%);
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.28),0 4px 14px rgba(10,30,90,.12);
+  font-family:var(--sans);font-size:9.5px;font-weight:400;letter-spacing:.26em;white-space:nowrap;text-transform:uppercase;color:rgba(255,255,255,.88);transition:opacity .8s,transform .8s}
+.nudge.show{opacity:.9;transform:translate(-50%,0)}
+.nudge .pill{position:relative;width:12px;height:19px;border-radius:7px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.75)}
+.nudge .pill::after{content:"";position:absolute;left:50%;width:2px;height:4px;margin-left:-1px;border-radius:1px;background:#fff;animation:swipe 1.8s cubic-bezier(.5,0,.3,1) infinite}
+@keyframes swipe{0%{top:12px;opacity:0}25%{opacity:1}100%{top:3px;opacity:0}}
 canvas#petals{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:60}
 
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.rv{opacity:1;transform:none}}
@@ -460,7 +460,7 @@ canvas#petals{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;
   <span class="bars"><i></i><i></i><i></i></span>
 </button>
 <div id="ytMusic" aria-hidden="true" style="position:fixed;width:1px;height:1px;left:-9999px;top:-9999px;opacity:0;pointer-events:none"></div>
-<div class="nudge" id="nudge"><span class="pill"></span>Swipe up to explore</div>
+<div class="nudge" id="nudge"><span class="pill"></span>Swipe up</div>
 <canvas id="petals"></canvas>
 
 <script>
