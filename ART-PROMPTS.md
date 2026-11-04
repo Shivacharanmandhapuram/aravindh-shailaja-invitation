@@ -3,6 +3,27 @@
 Generate each image below, save it with the **exact file name** shown, and drop it into `wedding-site/assets/`
 (or just send them to me in chat). I'll wire them into the page.
 
+## ROUND 3 — event pictures (replace the stock photos, which show strangers)
+
+Portrait **4:5**, at least 1080 × 1350. These are styled scenes, so no real people appear on the invitation.
+Attach `hero-sky` and the pillar `invite-frame` as style references, as in Round 2, and send them back with these names:
+
+### E1. `ev-mehendi.webp` — Mehendi (Tuesday evening)
+> A beautifully styled still life for a South Indian mehendi evening, seen from slightly above: henna cones arranged on a carved brass plate, a silver bowl of fresh green henna paste, a heap of fresh henna leaves, strings of jasmine and marigold, stacks of green and gold glass bangles, and an embroidered silk cushion on a low carved wooden seat. Soft fairy lights glow in the background, with warm bokeh, rich emerald green and gold tones, and a few rose petals scattered across the scene. No people, no faces, no hands, no figures of any kind. Luminous, highly detailed painterly digital illustration of South Indian Dravidian temple art, glossy temple pink, turquoise, ivory and burnished gold, warm golden-hour light with soft atmospheric haze, crisp ornamental carving, rich and premium, no text, no letters, no watermark, no logo, no oil lamps.
+
+### E2. `ev-haldi.webp` — Haldi (Wednesday morning)
+> A sunlit South Indian courtyard prepared for the haldi ceremony: a large brass urli filled with bright turmeric paste, fresh turmeric roots and a small kumkum bowl on a banana leaf, heaps of yellow and orange marigolds, mango-leaf torans hanging overhead, flowing yellow silk drapes and a decorated low wooden seat waiting in the centre. Bright morning sunlight streams in, everything glowing in turmeric yellow, marigold orange and gold. No people, no faces, no hands, no figures of any kind. Luminous, highly detailed painterly digital illustration of South Indian Dravidian temple art, glossy temple pink, turquoise, ivory and burnished gold, warm golden-hour light with soft atmospheric haze, crisp ornamental carving, rich and premium, no text, no letters, no watermark, no logo, no oil lamps.
+
+### E3. `ev-sangeet.webp` — Sangeet (Thursday night)
+> A festive South Indian courtyard at night set up for the sangeet: strings of warm fairy lights and marigold garlands overhead, a decorated dholak drum, a pair of silver ghungroo anklets and a small harmonium resting on colourful embroidered floor cushions, rose and marigold petals scattered across a rangoli, deep indigo night sky above with soft glowing bokeh. Joyful, musical and celebratory, in magenta, gold and indigo. No people, no faces, no hands, no figures of any kind. Luminous, highly detailed painterly digital illustration of South Indian Dravidian temple art, glossy temple pink, turquoise, ivory and burnished gold, warm golden-hour light with soft atmospheric haze, crisp ornamental carving, rich and premium, no text, no letters, no watermark, no logo, no oil lamps.
+
+### E4. `ev-muhurtham.webp` — Sumuhurtham (Friday, 7:09 AM)
+> A grand Telugu wedding mandapam at dawn, seen straight on: carved pillars wrapped in jasmine and roses, banana stems tied to the front pillars, mango-leaf torans across the top, and at the centre a brass kalash topped with a coconut and mango leaves on a silk cloth. In front, a silver plate of talambralu (turmeric-coloured rice) and a plate with the mangalasutra on fresh flowers and betel leaves. Soft golden sunrise light, marigold and rose petals on the floor. Sacred, auspicious and grand. No people, no faces, no hands, no figures of any kind. Luminous, highly detailed painterly digital illustration of South Indian Dravidian temple art, glossy temple pink, turquoise, ivory and burnished gold, warm golden-hour light with soft atmospheric haze, crisp ornamental carving, rich and premium, no text, no letters, no watermark, no logo, no oil lamps.
+
+When they're ready, send them and I'll swap them in for the stock photos.
+
+---
+
 ## ROUND 2 — make the page one continuous, premium piece  ✅ R1–R4 done and in the site
 
 **The rule for every new image:** match the look of `hero-sky` and the pillar `invite-frame` — glossy painterly temple art,
