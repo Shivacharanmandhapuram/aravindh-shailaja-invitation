@@ -501,13 +501,15 @@ const CONFIG = {
   music: { youtube: "r5hSMSpb1Qs", start: 97, volume: 20 },   // same song as the Pramod–Manisha site, from 1:37
   footerLine: "With love, the Peddolla family",
   story: "Some souls are destined to find each other, no matter how long the journey. Theirs is a story of finding peace in each other's presence, strength in every challenge, and a home in each other's hearts. As they take the sacred vows of forever, they carry the blessings of everyone who has been part of their journey — and invite you to celebrate the beginning of their forever.",
-  events: [   // [bracketed] values are placeholders — fill in when the dates are fixed
-    { name:"Haldi",       date:"[Date]", time:"[Time]", venue:"[Venue]", desc:"A morning of turmeric, laughter and blessings.",                   map:"https://maps.google.com", photo:"assets/stock-ev-haldi.webp" },
-    { name:"Mehendi",     date:"[Date]", time:"[Time]", venue:"[Venue]", desc:"An evening of mehendi artistry, music, and family celebration.",   map:"https://maps.google.com", photo:"assets/stock-ev-mehendi.webp" },
-    { name:"Sangeet",     date:"[Date]", time:"[Time]", venue:"[Venue]", desc:"Dance, songs and a night the families will talk about for years.", map:"https://maps.google.com", photo:"assets/stock-ev-sangeet.webp" },
+  events: [   // venue/map are optional — leave them out and the card hides those rows
+    { name:"Mehendi",     date:"Tuesday, 10 November 2026",   time:"7:00 PM",
+      desc:"An evening of mehendi artistry, music, and family celebration.", photo:"assets/stock-ev-mehendi.webp" },
+    { name:"Haldi",       date:"Wednesday, 11 November 2026", time:"11:00 AM",
+      desc:"A morning of turmeric, laughter and blessings.", photo:"assets/stock-ev-haldi.webp" },
+    { name:"Sangeet",     date:"Thursday, 12 November 2026",  time:"7:00 PM onwards",
+      desc:"Dance, songs and a night the families will talk about for years.", photo:"assets/stock-ev-sangeet.webp" },
     { name:"Sumuhurtham", date:"Friday, 13 November 2026", time:"7:09 AM · Vruschika Lagnam", venue:"K.S. Event Hall, Gadwal",
-      desc:"Opp. Rural Police Station, Kurnool Road, Gadwal.", map:"https://www.google.com/maps/search/?api=1&query=K.S.+Event+Hall,+Kurnool+Road,+Gadwal", photo:"assets/stock-ev-wedding.webp" },
-    { name:"Reception",   date:"[Date]", time:"[Time]", venue:"[Venue]", desc:"Dinner and celebration with the newlyweds.",                       map:"https://maps.google.com", photo:"assets/stock-ev-reception.webp" }
+      desc:"Opp. Rural Police Station, Kurnool Road, Gadwal.", map:"https://www.google.com/maps/search/?api=1&query=K.S.+Event+Hall,+Kurnool+Road,+Gadwal", photo:"assets/stock-ev-wedding.webp" }
   ]
 };
 
@@ -535,10 +537,10 @@ track.innerHTML = CONFIG.events.map((e,i) => `
     <div class="meta">
       <span>${ico.cal}${e.date}</span>
       <span>${ico.clock}${e.time}</span>
-      <span>${ico.pin}${e.venue}</span>
+      ${e.venue ? `<span>${ico.pin}${e.venue}</span>` : ""}
     </div>
     <p>${e.desc}</p>
-    <a class="btn" href="${e.map}" target="_blank" rel="noopener">View Location</a>
+    ${e.map ? `<a class="btn" href="${e.map}" target="_blank" rel="noopener">View Location</a>` : ""}
   </article>`).join("");
 dots.innerHTML = CONFIG.events.map(() => "<i></i>").join("");
 if (CONFIG.events.length === 1) { bannerTitle.textContent = "The Wedding"; document.querySelector(".ev-nav").hidden = true; track.classList.add("single"); }

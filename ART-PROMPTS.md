@@ -60,7 +60,7 @@ The set has two moods:
 
 1. `hero-sky.jpg` ✅  2. `hero-gopuram.png` ✅  3. `hero-trees.png` ✅  4. `invite-frame.png` ✅  5. `events-bg.jpg` ✅
 
-### 6. `story-couple.jpg` — the couple (for later, needs their photo)
+### 6. `story-couple.jpg` — the couple  ⛔ DROPPED: a transparent photo of the couple will be supplied directly
 Tall 9:16. **Upload a clear photo of your brother and the bride together.** Pick one version.
 
 **6a — at the temple (as before)**
